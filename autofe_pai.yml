@@ -1,0 +1,37 @@
+authorName: Xiang Long
+experimentName: example-auto-auto-fe
+# how many trials could be concurrently running
+trialConcurrency: 1
+# maximum experiment running duration
+maxExecDuration: 3h
+# empty means never stop
+maxTrialNum: 100
+# choice: local, remote, pai
+trainingServicePlatform: pai
+searchSpacePath: search_space.json
+# choice: true, false
+useAnnotation: false
+tuner:
+  codeDir: .
+  classFileName: autofe_tuner.py
+  className: AutoFETuner
+  classArgs:
+    optimize_mode: maximize
+trial:
+  command: python3 main.py
+  codeDir: .
+  gpuNum: 0
+  cpuNum: 1
+  memoryMB: 8196
+  image: msranni/nni:v1.9
+  virtualCluster: default
+  nniManagerNFSMountPath: <your_mount_dir>/nni_autofe_log
+  containerNFSMountPath: /mnt/<your_pai_storage_config_name>/nni_autofe_log
+  paiStorageConfigName: <your_pai_storage_config_name>
+# Configuration to access OpenPAI Cluster
+paiConfig:
+  userName: <your_pai_user_name>
+  token: <your_pai_application_token>
+  host: https://int.openpai.org
+  reuse: true # pai has job limit concurrency
+  reuse: true
